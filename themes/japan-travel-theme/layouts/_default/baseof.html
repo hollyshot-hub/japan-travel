@@ -3,9 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>日本旅行記</title>
+<title>{{ if .Title }}{{ .Title }} | {{ end }}日本旅行記</title>
+<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="nav-mark">旅</div>
+    日本旅行記
+  </a>
+  <ul class="nav-links">
+    <li><a href="/about/">About</a></li>
+    <li><a href="/map/">旅マップ</a></li>
+    <li><a href="/posts/">旅行記</a></li>
+    <li><a href="/profile/">Profile</a></li>
+  </ul>
+</nav>
 {{ block "main" . }}{{ end }}
+<footer>
+  <div class="footer-logo">日本旅行記</div>
+  <p>© 2025 — 47都道府県制覇への道</p>
+</footer>
 </body>
 </html>

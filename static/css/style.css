@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Noto+Sans+JP:wght@300;400&display=swap');
+
+:root {
+  --sumi: #1a1208;
+  --sumi2: #2c2416;
+  --washi: #f5f0e8;
+  --washi2: #ede8dc;
+  --washi3: #e4ddd0;
+  --vermillion: #c0392b;
+  --vermillion-l: #e74c3c;
+  --gold: #8b6914;
+  --gold-l: #c4960a;
+  --muted: #6b5d4a;
+  --border: rgba(44,36,22,0.15);
+  --border2: rgba(44,36,22,0.28);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Serif JP', serif;
+  background: var(--washi);
+  color: var(--sumi);
+  min-height: 100vh;
+}
+
+/* ナビゲーション */
+nav {
+  background: var(--sumi2);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  color: var(--washi);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.nav-mark {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--vermillion);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  color: var(--vermillion);
+}
+.nav-links {
+  display: flex; gap: 24px; list-style: none;
+}
+.nav-links a {
+  color: rgba(245,240,232,0.7);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold-l); }
+.nav-links a.active { color: var(--gold-l); }
+
+/* ボタン */
+.btn-primary {
+  background: var(--vermillion);
+  color: var(--washi);
+  border: none;
+  padding: 12px 32px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-radius: 2px;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--vermillion-l); }
+.btn-ghost {
+  background: transparent;
+  color: var(--washi);
+  border: 1px solid rgba(245,240,232,0.3);
+  padding: 12px 32px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 2px;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-ghost:hover { border-color: rgba(245,240,232,0.6); color: var(--washi); }
+
+/* セクション共通 */
+.section-kana {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--vermillion);
+  margin-bottom: 0.75rem;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.section-title {
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--sumi);
+  letter-spacing: 0.1em;
+}
+.section-line {
+  width: 40px;
+  height: 2px;
+  background: var(--vermillion);
+  margin: 1rem 0;
+}
+
+/* フッター */
+footer {
+  background: var(--sumi2);
+  padding: 2rem;
+  text-align: center;
+  font-size: 11px;
+  color: rgba(245,240,232,0.3);
+  letter-spacing: 0.15em;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.footer-logo {
+  font-family: 'Noto Serif JP', serif;
+  color: var(--washi);
+  font-size: 16px;
+  margin-bottom: 0.5rem;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  nav { padding: 0 1rem; }
+  .nav-links { gap: 12px; }
+  .nav-links a { font-size: 11px; }
+}
