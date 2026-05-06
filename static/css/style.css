@@ -221,3 +221,31 @@ footer {
   .stat-divider { display: none; }
   .hero-stats { gap: 1.5rem; }
 }
+
+/* 共通ページレイアウト */
+.page-section {
+  padding: 5rem 2rem;
+  min-height: calc(100vh - 56px);
+  background: var(--washi);
+}
+.page-inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+.about-body {
+  font-size: 15px;
+  line-height: 2.2;
+  color: var(--sumi);
+}
+.about-body h2 {
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border2);
+}
+.about-body p {
+  margin-bottom: 1.2rem;
+  font-family: 'Noto Serif JP', serif;
+}
