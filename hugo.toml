@@ -2,6 +2,7 @@ baseURL = "https://lively-zabaione-881ee9.netlify.app"
 languageCode = "ja"
 title = "日本旅行記"
 theme = "japan-travel-theme"
+summaryLength = 20
 
 [permalinks]
   posts = "/posts/:slug/"
