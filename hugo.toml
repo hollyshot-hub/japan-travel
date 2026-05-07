@@ -1,4 +1,7 @@
-baseURL = 'https://example.org/'
-locale = 'en-us'
-title = 'My New Hugo Project'
+baseURL = "https://lively-zabaione-881ee9.netlify.app"
+languageCode = "ja"
+title = "日本旅行記"
 theme = "japan-travel-theme"
+
+[permalinks]
+  posts = "/posts/:slug/"
