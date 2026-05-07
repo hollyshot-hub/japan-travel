@@ -114,7 +114,7 @@ function loadMuniMap(prefName) {
   // 都道府県レイヤーを残しつつズームする別アプローチ：
   // prefLayerをそのまま使い、クリックした県をズームして自治体を重ねる
   // 自治体境界は別GeoJSONから取得
-  const muniUrl = `https://raw.githubusercontent.com/smartnews-smri/japan-topography/main/data/municipality/geojson/s0010/japan_${code}.geojson`;
+  const muniUrl = `https://raw.githubusercontent.com/niiyz/JapanCityGeoJson/master/geojson/prefectures/${code}.json`;
 
   fetch(muniUrl)
     .then(r => {
