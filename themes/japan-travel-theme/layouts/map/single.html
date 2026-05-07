@@ -27,15 +27,13 @@
     <p class="map-export-note">コピーしたデータをdata/visited.jsonに貼り付けると記録が保存されます</p>
   </div>
 </section>
-
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const VISITED_MUNI = {{ if .Site.Data.visited }}{{ .Site.Data.visited.municipalities | jsonify }}{{ else }}[]{{ end }};
 let visitedSet = new Set(VISITED_MUNI);
-let map, prefLayer, muniLayer;
+let map2, prefLayer, muniLayer;
 let currentPref = null;
-
 const PREF_CODES = {
   '北海道':'01','青森県':'02','岩手県':'03','宮城県':'04','秋田県':'05',
   '山形県':'06','福島県':'07','茨城県':'08','栃木県':'09','群馬県':'10',
@@ -48,76 +46,20 @@ const PREF_CODES = {
   '佐賀県':'41','長崎県':'42','熊本県':'43','大分県':'44','宮崎県':'45',
   '鹿児島県':'46','沖縄県':'47'
 };
-
-ma
-cat > themes/japan-travel-theme/layouts/map/single.html << 'EOF'
-{{ define "main" }}
-<section class="map-page">
-  <div class="map-header">
-    <div class="map-header-inner">
-      <p class="section-kana">TRAVEL MAP</p>
-      <h1 class="section-title">訪問マップ</h1>
-      <div class="section-line"></div>
-      <p class="map-hint" id="mapHint">都道府県をタップしてください</p>
-    </div>
-    <div class="map-progress-wrap">
-      <div class="map-progress-bar"><div class="map-progress-fill" id="progressFill"></div></div>
-      <p class="map-progress-text" id="progressText">0 自治体訪問済み</p>
-    </div>
-  </div>
-  <div class="map-stage">
-    <div id="back-btn-wrap" style="display:none;padding:10px 16px">
-      <button class="back-btn" onclick="showPrefView()">← 都道府県一覧へ戻る</button>
-    </div>
-    <div id="map" style="height:600px;width:100%"></div>
-  </div>
-  <div class="map-legend">
-    <div class="legend-item"><div class="legend-dot dot-unvisited"></div>未訪問</div>
-    <div class="legend-item"><div class="legend-dot dot-visited"></div>訪問済み</div>
-  </div>
-  <div class="map-export-wrap">
-    <button class="btn-primary" onclick="exportVisited()">訪問データをコピー</button>
-    <p class="map-export-note">コピーしたデータをdata/visited.jsonに貼り付けると記録が保存されます</p>
-  </div>
-</section>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-const VISITED_MUNI = {{ if .Site.Data.visited }}{{ .Site.Data.visited.municipalities | jsonify }}{{ else }}[]{{ end }};
-let visitedSet = new Set(VISITED_MUNI);
-let map, prefLayer, muniLayer;
-let currentPref = null;
-
-const PREF_CODES = {
-  '北海道':'01','青森県':'02','岩手県':'03','宮城県':'04','秋田県':'05',
-  '山形県':'06','福島県':'07','茨城県':'08','栃木県':'09','群馬県':'10',
-  '埼玉県':'11','千葉県':'12','東京都':'13','神奈川県':'14','新潟県':'15',
-  '富山県':'16','石川県':'17','福井県':'18','山梨県':'19','長野県':'20',
-  '岐阜県':'21','静岡県':'22','愛知県':'23','三重県':'24','滋賀県':'25',
-  '京都府':'26','大阪府':'27','兵庫県':'28','奈良県':'29','和歌山県':'30',
-  '鳥取県':'31','島根県':'32','岡山県':'33','広島県':'34','山口県':'35',
-  '徳島県':'36','香川県':'37','愛媛県':'38','高知県':'39','福岡県':'40',
-  '佐賀県':'41','長崎県':'42','熊本県':'43','大分県':'44','宮崎県':'45',
-  '鹿児島県':'46','沖縄県':'47'
-};
-
-map = L.map('map', { center: [36.5, 136.0], zoom: 5 });
-L.tileLayer('').addTo(map);
-
+map2 = L.map('map', { center: [36.5, 136.0], zoom: 5 });
+L.tileLayer('').addTo(map2);
 function findNameKey(feature) {
   for (const k of ['nam_ja','name_ja','NAME_JA','N03_001']) {
     if (feature.properties[k] !== undefined) return k;
   }
   return Object.keys(feature.properties)[0];
 }
-
 function drawPrefMap() {
   fetch('https://raw.githubusercontent.com/dataofjapan/land/master/japan.geojson')
     .then(r => r.json())
     .then(data => {
-      if (muniLayer) { map.removeLayer(muniLayer); muniLayer = null; }
-      if (prefLayer) { map.removeLayer(prefLayer); prefLayer = null; }
+      if (muniLayer) { map2.removeLayer(muniLayer); muniLayer = null; }
+      if (prefLayer) { map2.removeLayer(prefLayer); prefLayer = null; }
       const nameKey = findNameKey(data.features[0]);
       prefLayer = L.geoJSON(data, {
         style: () => ({ fillColor: '#f0ebe0', fillOpacity: 0.85, color: '#8a7060', weight: 1.2 }),
@@ -126,30 +68,25 @@ function drawPrefMap() {
           layer.bindTooltip(name, { permanent: false, direction: 'top' });
           layer.on('click', () => loadMuniMap(name));
         }
-      }).addTo(map);
-      map.fitBounds(prefLayer.getBounds());
+      }).addTo(map2);
+      map2.fitBounds(prefLayer.getBounds());
       document.getElementById('mapHint').textContent = '都道府県をタップしてください';
     })
     .catch(() => {
       document.getElementById('mapHint').textContent = 'データの読み込みに失敗しました';
     });
 }
-
 function loadMuniMap(prefName) {
   currentPref = prefName;
   document.getElementById('mapHint').textContent = prefName + ' の自治体データを読み込み中...';
   document.getElementById('back-btn-wrap').style.display = 'block';
-
   const code = PREF_CODES[prefName];
-  const url = `https://raw.githubusercontent.com/niiyz/JapanCityGeoJson/master/geojson/prefectures/${code}.json`;
-
+  const url = 'https://raw.githubusercontent.com/niiyz/JapanCityGeoJson/master/geojson/prefectures/' + code + '.json';
   fetch(url)
     .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
     .then(data => {
-      if (prefLayer) { map.removeLayer(prefLayer); }
-      if (muniLayer) { map.removeLayer(muniLayer); muniLayer = null; }
-
-      // 同じ自治体名のFeatureをまとめる
+      if (prefLayer) { map2.removeLayer(prefLayer); }
+      if (muniLayer) { map2.removeLayer(muniLayer); muniLayer = null; }
       const muniMap = {};
       data.features.forEach(f => {
         const name = f.properties.N03_004 || f.properties.N03_003 || '';
@@ -157,13 +94,10 @@ function loadMuniMap(prefName) {
         if (!muniMap[name]) muniMap[name] = [];
         muniMap[name].push(f);
       });
-
-      // 自治体ごとにレイヤーを作成
       const layers = [];
       Object.entries(muniMap).forEach(([name, features]) => {
         const key = prefName + '/' + name;
         const isVisited = visitedSet.has(key);
-
         const geoJSON = { type: 'FeatureCollection', features };
         const layer = L.geoJSON(geoJSON, {
           style: () => ({
@@ -173,7 +107,6 @@ function loadMuniMap(prefName) {
             weight: 0.8
           })
         });
-
         layer.bindTooltip(name + (visitedSet.has(key) ? ' ✓' : ''), { sticky: true });
         layer.on('click', () => {
           if (visitedSet.has(key)) { visitedSet.delete(key); } else { visitedSet.add(key); }
@@ -183,13 +116,11 @@ function loadMuniMap(prefName) {
           updateProgress();
           saveToStorage();
         });
-
         layers.push(layer);
       });
-
-      muniLayer = L.layerGroup(layers).addTo(map);
+      muniLayer = L.layerGroup(layers).addTo(map2);
       const bounds = L.featureGroup(layers).getBounds();
-      map.fitBounds(bounds);
+      map2.fitBounds(bounds);
       document.getElementById('mapHint').textContent = prefName + ' — 自治体をタップして訪問済みに登録';
     })
     .catch(() => {
@@ -197,38 +128,32 @@ function loadMuniMap(prefName) {
       showPrefView();
     });
 }
-
 function showPrefView() {
   currentPref = null;
   document.getElementById('back-btn-wrap').style.display = 'none';
-  if (muniLayer) { map.removeLayer(muniLayer); muniLayer = null; }
+  if (muniLayer) { map2.removeLayer(muniLayer); muniLayer = null; }
   drawPrefMap();
 }
-
 function updateProgress() {
   const count = visitedSet.size;
   document.getElementById('progressText').textContent = count + ' 自治体訪問済み';
   document.getElementById('progressFill').style.width = Math.min(count / 1724 * 100, 100) + '%';
 }
-
 function saveToStorage() {
   try { localStorage.setItem('visited_municipalities', JSON.stringify([...visitedSet])); } catch(e) {}
 }
-
 function loadFromStorage() {
   try {
     const saved = localStorage.getItem('visited_municipalities');
     if (saved) JSON.parse(saved).forEach(v => visitedSet.add(v));
   } catch(e) {}
 }
-
 function exportVisited() {
   const data = JSON.stringify({ municipalities: [...visitedSet], articles: {} }, null, 2);
   navigator.clipboard.writeText(data).then(() => {
     alert('クリップボードにコピーしました。data/visited.jsonに貼り付けてください。');
   });
 }
-
 loadFromStorage();
 updateProgress();
 drawPrefMap();
