@@ -87,39 +87,49 @@ function loadMuniMap(prefName) {
     .then(data => {
       if (prefLayer) { map2.removeLayer(prefLayer); }
       if (muniLayer) { map2.removeLayer(muniLayer); muniLayer = null; }
-      const muniMap = {};
+      // featureNameMap: polygon -> 自治体名
+      const featureNameMap = new Map();
       data.features.forEach(f => {
         const name = f.properties.N03_004 || f.properties.N03_003 || '';
-        if (!name) return;
-        if (!muniMap[name]) muniMap[name] = [];
-        muniMap[name].push(f);
+        if (name) featureNameMap.set(f, name);
       });
-      const layers = [];
-      Object.entries(muniMap).forEach(([name, features]) => {
-        const key = prefName + '/' + name;
-        const isVisited = visitedSet.has(key);
-        const geoJSON = { type: 'FeatureCollection', features };
-        const layer = L.geoJSON(geoJSON, {
-          style: () => ({
-            fillColor: isVisited ? 'rgba(192,57,43,0.75)' : '#f0ebe0',
+
+      // 全featureを1つのgeoJSONレイヤーで描画
+      muniLayer = L.geoJSON(data, {
+        style: f => {
+          const name = f.properties.N03_004 || f.properties.N03_003 || '';
+          const key = prefName + '/' + name;
+          return {
+            fillColor: visitedSet.has(key) ? 'rgba(192,57,43,0.75)' : '#f0ebe0',
             fillOpacity: 0.85,
             color: '#9a8878',
             weight: 0.8
-          })
-        });
-        layer.bindTooltip(name + (visitedSet.has(key) ? ' ✓' : ''), { sticky: true });
-        layer.on('click', () => {
-          if (visitedSet.has(key)) { visitedSet.delete(key); } else { visitedSet.add(key); }
-          const visited = visitedSet.has(key);
-          layer.setStyle({ fillColor: visited ? 'rgba(192,57,43,0.75)' : '#f0ebe0' });
-          layer.setTooltipContent(name + (visited ? ' ✓' : ''));
-          updateProgress();
-          saveToStorage();
-        });
-        layers.push(layer);
-      });
-      muniLayer = L.layerGroup(layers).addTo(map2);
-      const bounds = L.featureGroup(layers).getBounds();
+          };
+        },
+        onEachFeature: (f, layer) => {
+          const name = f.properties.N03_004 || f.properties.N03_003 || '';
+          if (!name) return;
+          const key = prefName + '/' + name;
+          layer.bindTooltip(name + (visitedSet.has(key) ? ' ✓' : ''), { sticky: true });
+          layer.on('click', () => {
+            if (visitedSet.has(key)) { visitedSet.delete(key); } else { visitedSet.add(key); }
+            const visited = visitedSet.has(key);
+            // 同じ自治体名の全レイヤーを更新
+            muniLayer.eachLayer(l => {
+              if (l.feature) {
+                const n = l.feature.properties.N03_004 || l.feature.properties.N03_003 || '';
+                if (n === name) {
+                  l.setStyle({ fillColor: visited ? 'rgba(192,57,43,0.75)' : '#f0ebe0' });
+                  l.setTooltipContent(name + (visited ? ' ✓' : ''));
+                }
+              }
+            });
+            updateProgress();
+            saveToStorage();
+          });
+        }
+      }).addTo(map2);
+      const bounds = muniLayer.getBounds();
       map2.fitBounds(bounds);
       document.getElementById('mapHint').textContent = prefName + ' — 自治体をタップして訪問済みに登録';
     })
