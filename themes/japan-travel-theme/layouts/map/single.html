@@ -38,7 +38,7 @@ let visitedSet = new Set(VISITED_MUNI);
 let mapObj, prefLayer;
 let currentPref = null;
 
-mapObj = L.map("map", { center: [36.5, 136.0], zoom: 5 });
+mapObj = L.map("map", { center: [36.5, 136.0], zoom: 5, minZoom: 4, maxZoom: 8 });
 L.tileLayer("").addTo(mapObj);
 
 fetch("https://raw.githubusercontent.com/dataofjapan/land/master/japan.geojson")
