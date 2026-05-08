@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ if .Title }}{{ .Title }} | {{ end }}日本旅行記</title>
-<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
 </head>
 <body>
 <nav>
-  <a href="/" class="nav-logo">
+  <a href="{{ "/" | relURL }}" class="nav-logo">
     <div class="nav-mark">旅</div>
     日本旅行記
   </a>
   <ul class="nav-links">
-    <li><a href="/about/">About</a></li>
-    <li><a href="/map/">旅マップ</a></li>
-    <li><a href="/posts/">旅行記</a></li>
-    <li><a href="/profile/">Profile</a></li>
+    <li><a href="{{ "/about/" | relURL }}">About</a></li>
+    <li><a href="{{ "/map/" | relURL }}">旅マップ</a></li>
+    <li><a href="{{ "/posts/" | relURL }}">旅行記</a></li>
+    <li><a href="{{ "/profile/" | relURL }}">Profile</a></li>
   </ul>
 </nav>
 {{ block "main" . }}{{ end }}
