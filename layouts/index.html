@@ -8,7 +8,7 @@
     <p class="hero-desc">47都道府県をすべて訪れることを目指して<br>日本各地の風景・食・人・文化を記録しています</p>
     <div class="hero-stats">
       <div class="stat">
-        <div class="stat-num">320</div>
+        <div class="stat-num" id="visitedCount">0</div>
         <div class="stat-label">訪問自治体数</div>
       </div>
       <div class="stat-divider"></div>
@@ -28,4 +28,13 @@
     </div>
   </div>
 </section>
+<script>
+try {
+  const saved = localStorage.getItem("visited_municipalities");
+  if (saved) {
+    const count = JSON.parse(saved).length;
+    document.getElementById("visitedCount").textContent = count.toLocaleString();
+  }
+} catch(e) {}
+</script>
 {{ end }}
