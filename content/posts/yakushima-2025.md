@@ -29,4 +29,4 @@ summary: "3月の屋久島は苔が美しく、縄文杉への道のりは長く
 
 往復10時間の道のりの末、樹齢7000年とも言われる縄文杉に出会いました。
 
-![屋久島の風景](https://res.cloudinary.com/dbvowprca/image/upload/w_1200,q_auto,f_jpg/v1778336783/IMG_0669_ta4mcd.heic)![屋久島の風景](https://res.cloudinary.com/dbvowprca/image/upload/w_1200,q_auto,f_jpg/v1778336783/IMG_0669_ta4mcd.heic)
+![屋久島の風景](https://res.cloudinary.com/dbvowprca/image/upload/w_1200,q_auto,f_jpg/v1778336783/IMG_0669_ta4mcd.heic)
