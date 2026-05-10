@@ -169,7 +169,7 @@ function generate() {
   if (summary) fm += "summary: \\"" + summary + "\\"\\n";
   fm += "---\\n\\n";
   const content = fm + (body || "");
-  const cmd = "cat > content/posts/" + slug + ".md << \\'MDEOF\\'\\n" + content + "MDEOF";
+  const cmd = "cat > content/posts/" + slug + ".md << \\'MDEOF\\'\\n" + content + "\\nMDEOF";
   document.getElementById("cmdBox").textContent = cmd;
   document.getElementById("outputSection").style.display = "block";
   document.getElementById("outputSection").scrollIntoView({ behavior: "smooth" });
