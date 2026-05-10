@@ -445,3 +445,14 @@ footer {
   .muni-panel-inner { height: 500px !important; }
 }
 
+
+/* 都道府県・自治体タグ */
+.tag-pref {
+  background: #c0392b;
+  color: #fff;
+  font-weight: bold;
+}
+.tag-muni {
+  background: #e8e2d8;
+  color: #3d2b1a;
+}
