@@ -10,8 +10,20 @@
     <h1 class="post-single-title">{{ .Title }}</h1>
     {{ if .Params.places }}
     <div class="post-places">
+      {{ $prefs := slice }}
       {{ range .Params.places }}
-      <span class="tag tag-v">{{ . }}</span>
+        {{ $parts := split . "/" }}
+        {{ if ge (len $parts) 2 }}
+          {{ $pref := index $parts 0 }}
+          {{ $muni := index $parts 1 }}
+          {{ if not (in $prefs $pref) }}
+            {{ $prefs = $prefs | append $pref }}
+            <span class="tag tag-pref">{{ $pref }}</span>
+          {{ end }}
+          <span class="tag tag-muni">{{ $muni }}</span>
+        {{ else }}
+          <span class="tag tag-v">{{ . }}</span>
+        {{ end }}
       {{ end }}
     </div>
     {{ end }}
